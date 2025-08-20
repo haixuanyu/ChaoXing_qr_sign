@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@vant/weapp": "^1.11.7",
+    "crypto-js": "^4.2.0",
+    "vant": "^4.9.21"
+  }
+}

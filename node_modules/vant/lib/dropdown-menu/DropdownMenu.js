@@ -1,0 +1,170 @@
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name2 in all)
+    __defProp(target, name2, { get: all[name2], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var stdin_exports = {};
+__export(stdin_exports, {
+  DROPDOWN_KEY: () => DROPDOWN_KEY,
+  default: () => stdin_default,
+  dropdownMenuProps: () => dropdownMenuProps
+});
+module.exports = __toCommonJS(stdin_exports);
+var import_vue = require("vue");
+var import_utils = require("../utils");
+var import_use_id = require("../composables/use-id");
+var import_use_expose = require("../composables/use-expose");
+var import_use = require("@vant/use");
+const [name, bem] = (0, import_utils.createNamespace)("dropdown-menu");
+const dropdownMenuProps = {
+  overlay: import_utils.truthProp,
+  zIndex: import_utils.numericProp,
+  duration: (0, import_utils.makeNumericProp)(0.2),
+  direction: (0, import_utils.makeStringProp)("down"),
+  activeColor: String,
+  autoLocate: Boolean,
+  closeOnClickOutside: import_utils.truthProp,
+  closeOnClickOverlay: import_utils.truthProp,
+  swipeThreshold: import_utils.numericProp
+};
+const DROPDOWN_KEY = Symbol(name);
+var stdin_default = (0, import_vue.defineComponent)({
+  name,
+  props: dropdownMenuProps,
+  setup(props, {
+    slots
+  }) {
+    const id = (0, import_use_id.useId)();
+    const root = (0, import_vue.ref)();
+    const barRef = (0, import_vue.ref)();
+    const offset = (0, import_vue.ref)(0);
+    const {
+      children,
+      linkChildren
+    } = (0, import_use.useChildren)(DROPDOWN_KEY);
+    const scrollParent = (0, import_use.useScrollParent)(root);
+    const opened = (0, import_vue.computed)(() => children.some((item) => item.state.showWrapper));
+    const scrollable = (0, import_vue.computed)(() => props.swipeThreshold && children.length > +props.swipeThreshold);
+    const barStyle = (0, import_vue.computed)(() => {
+      if (opened.value && (0, import_utils.isDef)(props.zIndex)) {
+        return {
+          zIndex: +props.zIndex + 1
+        };
+      }
+    });
+    const close = () => {
+      children.forEach((item) => {
+        item.toggle(false);
+      });
+    };
+    const onClickAway = () => {
+      if (props.closeOnClickOutside) {
+        close();
+      }
+    };
+    const updateOffset = () => {
+      if (barRef.value) {
+        const rect = (0, import_use.useRect)(barRef);
+        if (props.direction === "down") {
+          offset.value = rect.bottom;
+        } else {
+          offset.value = import_utils.windowHeight.value - rect.top;
+        }
+      }
+    };
+    const onScroll = () => {
+      if (opened.value) {
+        updateOffset();
+      }
+    };
+    const toggleItem = (active) => {
+      children.forEach((item, index) => {
+        if (index === active) {
+          item.toggle();
+        } else if (item.state.showPopup) {
+          item.toggle(false, {
+            immediate: true
+          });
+        }
+      });
+    };
+    const renderTitle = (item, index) => {
+      const {
+        showPopup
+      } = item.state;
+      const {
+        disabled,
+        titleClass
+      } = item;
+      return (0, import_vue.createVNode)("div", {
+        "id": `${id}-${index}`,
+        "role": "button",
+        "tabindex": disabled ? void 0 : 0,
+        "data-allow-mismatch": "attribute",
+        "class": [bem("item", {
+          disabled,
+          grow: scrollable.value
+        }), {
+          [import_utils.HAPTICS_FEEDBACK]: !disabled
+        }],
+        "onClick": () => {
+          if (!disabled) {
+            toggleItem(index);
+          }
+        }
+      }, [(0, import_vue.createVNode)("span", {
+        "class": [bem("title", {
+          down: showPopup === (props.direction === "down"),
+          active: showPopup
+        }), titleClass],
+        "style": {
+          color: showPopup ? props.activeColor : ""
+        }
+      }, [(0, import_vue.createVNode)("div", {
+        "class": "van-ellipsis"
+      }, [item.renderTitle()])])]);
+    };
+    (0, import_use_expose.useExpose)({
+      close,
+      opened
+    });
+    linkChildren({
+      id,
+      props,
+      offset,
+      opened,
+      updateOffset
+    });
+    (0, import_use.useClickAway)(root, onClickAway);
+    (0, import_use.useEventListener)("scroll", onScroll, {
+      target: scrollParent,
+      passive: true
+    });
+    return () => {
+      var _a;
+      return (0, import_vue.createVNode)("div", {
+        "ref": root,
+        "class": bem()
+      }, [(0, import_vue.createVNode)("div", {
+        "ref": barRef,
+        "style": barStyle.value,
+        "class": bem("bar", {
+          opened: opened.value,
+          scrollable: scrollable.value
+        })
+      }, [children.map(renderTitle)]), (_a = slots.default) == null ? void 0 : _a.call(slots)]);
+    };
+  }
+});

@@ -1,0 +1,175 @@
+
+  /* 使用通用样式，兼容多端 */
+.icon {
+    font-family: 'iconfont' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+.class-active-container {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+.header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: #46a0fc;
+    padding: 12px 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header-left {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.header-left:active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.header-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.header-right {
+    width: 30px;
+}
+.activity-list {
+    padding: 10px 10px 0;
+}
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    margin-bottom: 10px;
+}
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+.activity-item:active {
+    background-color: #f0f0f0;
+}
+.activity-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 24px;
+    overflow: hidden;
+}
+.activity-content {
+    flex: 1;
+    overflow: hidden;
+}
+.activity-title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.activity-desc {
+    font-size: 14px;
+    color: #999;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.activity-extra {
+    margin-left: 10px;
+}
+.activity-time {
+    font-size: 12px;
+    color: #999;
+}
+.no-more {
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+  /* 扫码弹窗样式 */
+.scanner-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+.popup-content {
+    position: relative;
+    width: 80%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.popup-header {
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #eee;
+}
+.popup-header .close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    color: #999;
+}
+.scanner-placeholder {
+    text-align: center;
+    padding: 30px 0;
+}
+.scanner-placeholder uni-text {
+    display: block;
+    margin-top: 10px;
+    color: #999;
+}
+.scanner-actions {
+    padding: 20px;
+}
+.scan-btn {
+    width: 100%;
+    background: #46a0fc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 0;
+    font-size: 16px;
+}
+.scan-btn:disabled {
+    background: #ccc;
+}

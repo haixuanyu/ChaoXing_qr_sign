@@ -1,0 +1,14 @@
+import type { InjectionKey } from 'vue';
+import type { FormProvide } from '../form/types';
+export declare const BORDER = "van-hairline";
+export declare const BORDER_TOP = "van-hairline--top";
+export declare const BORDER_LEFT = "van-hairline--left";
+export declare const BORDER_RIGHT = "van-hairline--right";
+export declare const BORDER_BOTTOM = "van-hairline--bottom";
+export declare const BORDER_SURROUND = "van-hairline--surround";
+export declare const BORDER_TOP_BOTTOM = "van-hairline--top-bottom";
+export declare const BORDER_UNSET_TOP_BOTTOM = "van-hairline-unset--top-bottom";
+export declare const HAPTICS_FEEDBACK = "van-haptics-feedback";
+export declare const FORM_KEY: InjectionKey<FormProvide>;
+export declare const LONG_PRESS_START_TIME = 500;
+export declare const TAP_OFFSET = 5;

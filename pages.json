@@ -1,0 +1,57 @@
+{
+  "pages": [{
+      "path": "pages/ClassView",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/ClassActive",
+      "style": {
+        "navigationBarTitleText": "课程活动"
+      }
+    },
+    {
+      "path": "pages/HomeView",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+
+    {
+      "path": "pages/AccountView",
+      "style": {
+        "navigationBarTitleText": "账号管理"
+      }
+    },
+    {
+      "path": "pages/QRcode",
+      "style": {
+        "navigationBarTitleText": "扫码",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/disclaimer",
+      "style": {
+        "navigationBarTitleText": "使用须知"
+      }
+    }
+  ],
+  "tabBar": {
+    "list": [{
+        "pagePath": "pages/ClassView",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/QRcode",
+        "text": "扫码"
+      },
+      {
+        "pagePath": "pages/HomeView",
+        "text": "我的"
+      }
+    ]
+  }
+}
