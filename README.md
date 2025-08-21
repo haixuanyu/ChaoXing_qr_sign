@@ -18,7 +18,7 @@
   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-44-787_io.dcloud.HBuilder.jpg" width="200" alt="个人界面" style="margin: 10px;">
 </div>
 
-> 首页|活动｜扫码｜个人
+> 首页｜活动｜扫码｜个人
 
 ---
 
