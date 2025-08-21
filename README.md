@@ -12,9 +12,9 @@
 以下是本应用的主要界面截图，采用简洁现代设计，操作直观，专为移动端优化。
 
 <div align="center">
-<!--   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/assets/.../home.jpg" width="200" alt="首页" style="margin: 10px;">
+  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-25-737_io.dcloud.HBuilder.jpg" width="200" alt="首页" style="margin: 10px;">
   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/assets/.../scan.jpg" width="200" alt="扫码界面" style="margin: 10px;">
-  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/assets/.../success.jpg" width="200" alt="签到成功" style="margin: 10px;"> -->
+  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/assets/.../success.jpg" width="200" alt="签到成功" style="margin: 10px;">
 </div>
 
 > 首页｜扫码中｜签到成功
