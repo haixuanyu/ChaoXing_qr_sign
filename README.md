@@ -13,11 +13,12 @@
 
 <div align="center">
   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-25-737_io.dcloud.HBuilder.jpg" width="200" alt="首页" style="margin: 10px;">
-  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/assets/.../scan.jpg" width="200" alt="扫码界面" style="margin: 10px;">
-  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/assets/.../success.jpg" width="200" alt="签到成功" style="margin: 10px;">
+  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-34-803_io.dcloud.HBuilder.jpg" width="200" alt="活动" style="margin: 10px;">
+  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-40-007_io.dcloud.HBuilder.jpg" width="200" alt="扫码界面" style="margin: 10px;">
+  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-44-787_io.dcloud.HBuilder.jpg" width="200" alt="个人界面" style="margin: 10px;">
 </div>
 
-> 首页｜扫码中｜签到成功
+> 首页|活动｜扫码｜个人
 
 ---
 
