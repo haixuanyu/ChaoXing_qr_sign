@@ -63,7 +63,7 @@
 
 前往 [Releases 发布页](https://github.com/haixuanyu/ChaoXing_qr_sign/releases) 下载最新版本：
 
-👉 [下载 v1.0.2](https://github.com/haixuanyu/ChaoXing_qr_sign/releases/tag/v1.0.2)
+👉 [下载 v1.0.5](https://github.com/haixuanyu/ChaoXing_qr_sign/releases/tag/v1.0.5)
 
 安装前请在手机设置中开启：  
 **“安全” → “未知来源” → 允许安装来自外部的应用**
