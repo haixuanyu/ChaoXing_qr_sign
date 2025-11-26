@@ -4,22 +4,23 @@
       <!-- 头像（添加点击事件） -->
       <view class="avatar-container" @click="changeAvatar">
         <image class="avatar" :src="avatarUrl" mode="aspectFill" />
+        <!-- 用户信息 -->
+        <view class="user-info">
+          <text class="user-name">{{name}}</text>
+        </view>
       </view>
-      <!-- 用户信息 -->
-      <view class="user-info">
-        <text class="user-name">{{name}}</text>
-      </view>
+
     </view>
 
     <!-- 功能列表 -->
     <view class="function-list">
       <view class="function-item" @click="toAccountManagement">
-        <image src="/static/账号管理.png" class="function-icon"></image>
+        <image src="/static/account.png" class="function-icon"></image>
         <text class="function-title">账号管理</text>
         <text class="arrow">›</text>
       </view>
       <view class="function-item" @click="tomian">
-        <image src="/static/免责声明.png" class="function-icon"></image>
+        <image src="/static/mianze.png" class="function-icon"></image>
         <text class="function-title">使用须知</text>
         <text class="arrow">›</text>
       </view>
@@ -34,7 +35,7 @@
         <text class="arrow">›</text>
       </view>
       <view class="function-item" @click="money">
-        <image src="/static/投币@2x-copy-copy.png" class="function-icon"></image>
+        <image src="/static/toubi.png " class="function-icon"></image>
         <text class="function-title">赞助作者</text>
         <text class="arrow">›</text>
       </view>
@@ -217,16 +218,24 @@
     width: 30px;
   }
 
+
   /* 个人信息区域 */
   .profile-section {
     background: white;
     padding: 20px;
     margin-bottom: 10px;
-    text-align: center;
+    text-align: left;
   }
 
+  /* 核心修改：启用 Flex 布局 */
   .avatar-container {
-    margin-bottom: 15px;
+    display: flex;
+    /* 水平排列子元素 */
+    align-items: center;
+    /* 垂直居中对齐 */
+    gap: 15px;
+    /* 头像和文字之间的间距 */
+    /* 移除原来的 margin-bottom，避免多余空白 */
   }
 
   .avatar {
@@ -237,20 +246,28 @@
     border: 3px solid #f0f0f0;
   }
 
+  /* 移除 .user-info 的 text-align: center */
+  /* 因为现在是水平布局，名字不需要单独居中 */
   .user-info {
-    text-align: center;
+    /* 可选：让文字区域占据剩余空间 */
+    flex: 1;
+
   }
 
   .user-name {
     font-size: 20px;
     font-weight: 500;
     color: #333;
-    margin-bottom: 5px;
+    /* 移除 margin-bottom，因为不再需要额外的垂直间距 */
+    margin: 0;
+    /* 重置默认外边距 */
   }
 
   .user-id {
     font-size: 14px;
     color: #999;
+    margin: 0;
+    /* 如果想显示 user-id，它会在 user-name 下方 */
   }
 
   /* 功能列表 */

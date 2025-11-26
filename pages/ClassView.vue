@@ -316,9 +316,9 @@
   /* 图标区域 */
   .class-icon {
     width: 64px;
-    height: 36px;
-    border-radius: 3px;
-    background-color: #eaf4ff;
+    height: 40px;
+    border-radius: 4px;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;

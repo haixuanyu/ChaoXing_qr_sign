@@ -1,3 +1,5 @@
+import "./chunk-TDUMLE5V.js";
+
 // D:/learning/edurevolution/node_modules/vant/es/utils/basic.mjs
 function noop() {
 }

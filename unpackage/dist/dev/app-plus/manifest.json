@@ -7,8 +7,8 @@
   "id": "__UNI__D72075C",
   "name": "签星",
   "version": {
-    "name": "1.0.0",
-    "code": "100"
+    "name": "1.0.5",
+    "code": 123236
   },
   "description": "该项目仅供学习交流使用，请勿用于其他",
   "developer": {
@@ -17,6 +17,11 @@
     "url": ""
   },
   "permissions": {
+    "Barcode": {},
+    "Maps": {
+      "coordType": "gcj02"
+    },
+    "Geolocation": {},
     "UniNView": {
       "description": "UniNView原生渲染"
     }
@@ -83,6 +88,7 @@
         }
       },
       "google": {
+        "package": "com.haixuanyu.chaoxingqrsign",
         "permissions": [
           "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
           "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
@@ -92,13 +98,33 @@
           "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
           "<uses-permission android:name=\"android.permission.CAMERA\"/>",
           "<uses-feature android:name=\"android.hardware.camera\"/>",
+          "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
           "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>"
         ]
       },
       "apple": {
+        "bundleid": "com.haixuanyu.chaoxingqrsign",
         "dSYMs": false
       },
       "plugins": {
+        "maps": {
+          "amap": {
+            "name": "amap_13146555886Cj0lUGzln",
+            "appkey_ios": "0062cee4124319ce426cef2694632dd2",
+            "appkey_android": "0bfab75b907c5e6deae5b5946ce46abf"
+          }
+        },
+        "geolocation": {
+          "amap": {
+            "name": "amap_13146555886Cj0lUGzln",
+            "__platform__": [
+              "ios",
+              "android"
+            ],
+            "appkey_ios": "0062cee4124319ce426cef2694632dd2",
+            "appkey_android": "0bfab75b907c5e6deae5b5946ce46abf"
+          }
+        },
         "audio": {
           "mp3": {
             "description": "Android平台录音支持MP3格式文件"
@@ -111,6 +137,7 @@
       "style": "dark",
       "background": "#000000"
     },
+    "arguments": "{\"name\":\"\",\"path\":\"\",\"query\":\"\"}",
     "uniStatistics": {
       "enable": false
     },
@@ -124,7 +151,7 @@
     "uni-app": {
       "control": "uni-v3",
       "vueVersion": "3",
-      "compilerVersion": "4.75",
+      "compilerVersion": "4.85",
       "nvueCompiler": "uni-app",
       "renderer": "auto",
       "nvue": {
@@ -148,15 +175,21 @@
       "list": [
         {
           "pagePath": "pages/ClassView",
-          "text": "首页"
+          "text": "首页",
+          "iconPath": "/static/home.png",
+          "selectedIconPath": "/static/home (1).png"
         },
         {
           "pagePath": "pages/QRcode",
-          "text": "扫码"
+          "text": "扫码",
+          "iconPath": "/static/qr.png",
+          "selectedIconPath": "/static/qr1.png"
         },
         {
           "pagePath": "pages/HomeView",
-          "text": "我的"
+          "text": "我的",
+          "iconPath": "/static/my.png",
+          "selectedIconPath": "/static/my1.png"
         }
       ],
       "selectedIndex": 0,

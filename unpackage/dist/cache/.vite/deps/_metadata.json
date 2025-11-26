@@ -1,15 +1,25 @@
 {
-  "hash": "00731721",
-  "configHash": "1c035780",
+  "hash": "5c2aab41",
+  "configHash": "a1a8e325",
   "lockfileHash": "127ca913",
-  "browserHash": "bb66b59a",
+  "browserHash": "23d00ba0",
   "optimized": {
     "vant": {
       "src": "../../../../../node_modules/vant/es/index.mjs",
       "file": "vant.js",
-      "fileHash": "55cd9470",
+      "fileHash": "a7b085ef",
       "needsInterop": false
+    },
+    "crypto-js": {
+      "src": "../../../../../node_modules/crypto-js/index.js",
+      "file": "crypto-js.js",
+      "fileHash": "76f76d14",
+      "needsInterop": true
     }
   },
-  "chunks": {}
+  "chunks": {
+    "chunk-TDUMLE5V": {
+      "file": "chunk-TDUMLE5V.js"
+    }
+  }
 }

@@ -2,8 +2,8 @@
     "name" : "签星",
     "appid" : "__UNI__D72075C",
     "description" : "该项目仅供学习交流使用，请勿用于其他",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.5",
+    "versionCode" : 123236,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -17,11 +17,16 @@
             "delay" : 0
         },
         /* 模块配置 */
-        "modules" : {},
+        "modules" : {
+            "Barcode" : {},
+            "Maps" : {},
+            "Geolocation" : {}
+        },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
             "android" : {
+                "package" : "com.haixuanyu.chaoxingqrsign",
                 "permissions" : [
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
@@ -31,15 +36,33 @@
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
                     "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>"
                 ]
             },
             /* ios打包配置 */
             "ios" : {
+                "bundleid" : "com.haixuanyu.chaoxingqrsign",
                 "dSYMs" : false
             },
             /* SDK配置 */
-            "sdkConfigs" : {},
+            "sdkConfigs" : {
+                "maps" : {
+                    "amap" : {
+                        "name" : "amap_13146555886Cj0lUGzln",
+                        "appkey_ios" : "0062cee4124319ce426cef2694632dd2",
+                        "appkey_android" : "0bfab75b907c5e6deae5b5946ce46abf"
+                    }
+                },
+                "geolocation" : {
+                    "amap" : {
+                        "name" : "amap_13146555886Cj0lUGzln",
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "0062cee4124319ce426cef2694632dd2",
+                        "appkey_android" : "0bfab75b907c5e6deae5b5946ce46abf"
+                    }
+                }
+            },
             "splashscreen" : {
                 "androidStyle" : "common",
                 "android" : {

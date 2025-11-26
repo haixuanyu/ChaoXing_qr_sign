@@ -7,7 +7,7 @@
           <image :src="item.logo" style="width: 48px;height: 48px;"></image>
         </view>
         <view class="activity-content">
-          <view class="activity-title">{{ decodeUnicode(item.nameOne) }}</view>
+          <view class="activity-title">{{ truncateAndDecode(item.nameOne) }}</view>
           <view class="activity-desc">{{ getStatusText(item.status) }}{{ item.nameFour }}</view>
         </view>
       </view>
@@ -73,9 +73,31 @@
     fetchActiveList()
   })
 
+  // 1. 保持 decodeUnicode 纯净（只负责解码）
   function decodeUnicode(str) {
-    // 添加引号以使它成为一个合法的 JSON 字符串
-    return JSON.parse(`"${str}"`);
+    try {
+      // 安全：处理可能包含引号、反斜杠等的字符串
+      return JSON.parse(`"${str}"`);
+    } catch (e) {
+      console.warn('Unicode 解码失败:', str, e);
+      return str; // 解码失败则返回原字符串
+    }
+  }
+
+  // 2. 新增一个函数：先清理截取，再解码
+  function truncateAndDecode(str, length = 5) {
+    if (typeof str !== 'string' || str.length === 0) {
+      return '';
+    }
+
+    // 步骤1: 去除所有空白字符（空格、换行 \n、回车 \r、制表符 \t 等）
+    const noWhitespace = str.replace(/\s/g, '');
+
+    // 步骤2: 截取前 `length` 个字符
+    const truncated = noWhitespace.substring(0, length);
+
+    // 步骤3: 使用原有的 decodeUnicode 进行解码
+    return decodeUnicode(noWhitespace);
   }
 
 
@@ -84,7 +106,7 @@
     loading.value = true
     const cookie = uni.getStorageSync('CHAOXING_COOKIE');
     const url =
-      `https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist?classId=${clazzId.value}&courseId=${courseId.value}&fid=1287`
+      `https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist?classId=${clazzId.value}&courseId=${courseId.value}&fid=0`
     console.log(cookie)
     uni.request({
       url,
@@ -123,16 +145,37 @@
 
   // 点击活动项
   const onItemClick = (item) => {
+
     if (item.otherId === '2') {
-      uni.switchTab({
-        url: '/pages/QRcode'
-      })
+      if (item.status === 2) {
+        uni.showToast({
+          title: '活动已结束',
+          icon: 'none'
+        })
+      } else {
+        uni.switchTab({
+          url: '/pages/QRcode'
+        })
+      }
+    } else if (item.otherId === '4') {
+      console.log(item.id)
+      if (item.status === 2) {
+        uni.showToast({
+          title: '活动已结束',
+          icon: 'none'
+        })
+      } else {
+        uni.navigateTo({
+          url: `/pages/location/location?activeid=${item.id}`
+        })
+      }
     } else {
       uni.showToast({
         title: '前面的区域以后再来探索吧',
         icon: 'none'
       })
     }
+
   }
 
 

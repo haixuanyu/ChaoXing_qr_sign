@@ -164,7 +164,10 @@
             })
             .filter(Boolean)
             .join('; ');
-          uni.setStorageSync('CHAOXING_COOKIE', cookieStr);
+          console.log(accountList.value.length)
+          if (accountList.value.length == 0) {
+            uni.setStorageSync('CHAOXING_COOKIE', cookieStr);
+          }
           resolve(data['status']);
         },
         fail: (err) => {

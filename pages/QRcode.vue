@@ -13,7 +13,9 @@
 
   // 账号列表
   const accounts = ref([])
-
+  const isAllSelected = computed(() => {
+    return accounts.value.length > 0 && selectedIds.value.length === accounts.value.length
+  })
   // 选中的账号 ID 列表
   const selectedIds = ref([])
   const msg = ref('')
@@ -112,6 +114,15 @@
       selectedIds.value.splice(index, 1)
     }
   }
+  const toggleSelectAll = () => {
+    if (isAllSelected.value) {
+      // 取消全选
+      selectedIds.value = []
+    } else {
+      // 全选：提取所有账号 ID
+      selectedIds.value = accounts.value.map(acc => acc.id)
+    }
+  }
   const getQueryParams = (url) => {
     // 1. 安全处理：转字符串，防止 null/undefined
     const str = String(url || '')
@@ -166,6 +177,7 @@
                 message,
               });
             },
+
             fail: (err) => {
               const errorMsg = `请求失败:${err.errMsg}`;
               resolve({
@@ -263,32 +275,38 @@
     <view class="header">
       <text class="title">扫码账号</text>
     </view>
+    <!-- 全选按钮 -->
 
-    <!-- 账号列表 -->
     <view class="account-list">
+      <!-- 全选行（模拟成一个账号项） -->
+      <view class="account-item">
+        <label class="account-label" @click="toggleSelectAll">
+          <!-- 自定义复选框：根据 isAllSelected 控制是否打勾 -->
+          <view class="custom-checkbox" :class="{ checked: isAllSelected }">
+            <text v-if="isAllSelected" class="icon-check">✔</text>
+          </view>
+          <!-- 显示文字 -->
+          <text class="account-name">全选</text>
+        </label>
+      </view>
+
+      <!-- 账号列表 -->
       <view v-for="account in accounts" :key="account.id" class="account-item">
         <label class="account-label" @click="toggleAccount(account.id)">
-          <!-- 自定义复选框 -->
           <view class="custom-checkbox" :class="{ checked: selectedIds.includes(account.id) }">
             <text v-if="selectedIds.includes(account.id)" class="icon-check">✔</text>
           </view>
-          <!-- 账号信息 -->
           <text class="account-name">{{ account.name }}</text>
         </label>
       </view>
     </view>
 
-    <!-- 已选提示 -->
-    <view class="selected-tip">
-      <text v-if="selectedAccounts.length > 0">已选择 {{ selectedAccounts.length }} 个账号</text>
-      <text v-else>暂未选择账号</text>
-    </view>
 
     <!-- 扫码按钮 -->
     <view class="action-section">
       <button class="scan-btn" :disabled="selectedAccounts.length === 0" :loading="isScanning"
         @click="handleScan(selectedIds)">
-        {{ isScanning ? '扫描中...' : '扫码获取信息' }}
+        {{ isScanning ? '扫描中...' : '扫码签到' }}
       </button>
     </view>
     <view>{{text}}</view>

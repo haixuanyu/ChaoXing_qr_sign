@@ -4,9 +4,6 @@
 
     <!-- 内容区域 -->
     <scroll-view class="content" scroll-y>
-      <view class="section">
-        <text class="title">使用须知与免责声明</text>
-      </view>
 
       <view class="section">
         <text class="text">
@@ -27,7 +24,6 @@
       </view>
 
       <view><text>—— 海轩</text></view>
-      <view><text>📧 联系邮箱：13146555886@163.com</text></view>
     </scroll-view>
   </view>
 </template>
