@@ -9502,21 +9502,6 @@ if (uni.restoreGlobal) {
           /* KEYED_FRAGMENT */
         ))
       ]),
-      vue.createElementVNode("view", { class: "action-section" }, [
-        vue.createElementVNode("button", {
-          class: "scan-btn",
-          disabled: $setup.selectedAccounts.length === 0,
-          loading: $setup.isScanning,
-          onClick: _cache[0] || (_cache[0] = ($event) => $setup.handleScan($setup.selectedIds))
-        }, vue.toDisplayString($setup.isScanning ? "扫描中..." : "扫码签到"), 9, ["disabled", "loading"])
-      ]),
-      vue.createElementVNode(
-        "view",
-        null,
-        vue.toDisplayString($setup.text),
-        1
-        /* TEXT */
-      ),
       $setup.scanResult ? (vue.openBlock(), vue.createElementBlock("view", {
         key: 0,
         class: "result-section"

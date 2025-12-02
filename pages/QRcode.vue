@@ -303,15 +303,6 @@
 
 
     <!-- 扫码按钮 -->
-    <view class="action-section">
-      <button class="scan-btn" :disabled="selectedAccounts.length === 0" :loading="isScanning"
-        @click="handleScan(selectedIds)">
-        {{ isScanning ? '扫描中...' : '扫码签到' }}
-      </button>
-    </view>
-    <view>{{text}}</view>
-
-    <!-- 扫码结果 -->
     <view v-if="scanResult" class="result-section">
       <view>签到结果</view>
       <view v-for="(item, index) in mise" :key="index">
