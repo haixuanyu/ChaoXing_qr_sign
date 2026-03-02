@@ -8315,6 +8315,7 @@ if (uni.restoreGlobal) {
       });
       const activeTab = vue.ref("class");
       const toClassActive = (item) => {
+        uni.vibrateShort();
         uni.navigateTo({
           url: `/pages/ClassActive?courseId=${item.courseId}&clazzId=${item.clazzId}`
         });
@@ -8358,9 +8359,9 @@ if (uni.restoreGlobal) {
               return;
             }
           } else {
-            formatAppLog("log", "at pages/ClassView.vue:256", "登录有效");
+            formatAppLog("log", "at pages/ClassView.vue:257", "登录有效");
           }
-          formatAppLog("log", "at pages/ClassView.vue:258", "当前cookie：", cookie);
+          formatAppLog("log", "at pages/ClassView.vue:259", "当前cookie：", cookie);
           if (cookie) {
             fetchData(cookie);
           }
@@ -8630,7 +8631,7 @@ if (uni.restoreGlobal) {
             });
           },
           fail: (err) => {
-            formatAppLog("log", "at pages/HomeView.vue:87", "选择头像失败", err);
+            formatAppLog("log", "at pages/HomeView.vue:88", "选择头像失败", err);
           }
         });
       };
@@ -8641,6 +8642,7 @@ if (uni.restoreGlobal) {
         });
       };
       const money = () => {
+        uni.vibrateShort();
         uni.showToast({
           icon: "none",
           title: "好好生活，就是最大的支持。若喜欢，点个Github Star 就够了 ⭐"
@@ -8791,6 +8793,7 @@ if (uni.restoreGlobal) {
       });
       const isEditing = vue.ref(false);
       const inputFocus = vue.ref(false);
+      const editingAccountId = vue.ref(null);
       function encryptByAES(message) {
         const chaoxingkey = "u2oh6Vu^HWe4_AES";
         const utf8Key = CryptoJS.enc.Utf8.parse(chaoxingkey);
@@ -8799,7 +8802,6 @@ if (uni.restoreGlobal) {
           iv: utf8Iv,
           mode: CryptoJS.mode.CBC,
           padding: CryptoJS.pad.Pkcs7
-          // 关键：避免 CryptoJS 自动派生密钥
         });
         return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
       }
@@ -8807,8 +8809,8 @@ if (uni.restoreGlobal) {
         return new Promise((resolve, reject) => {
           const eusername = encryptByAES(username);
           const epassword = encryptByAES(password);
-          formatAppLog("log", "at pages/AccountView.vue:130", "加密后的用户名:", eusername);
-          formatAppLog("log", "at pages/AccountView.vue:131", "加密后的密码:", epassword);
+          formatAppLog("log", "at pages/AccountView.vue:141", "加密后的用户名:", eusername);
+          formatAppLog("log", "at pages/AccountView.vue:142", "加密后的密码:", epassword);
           uni.request({
             url: "https://passport2.chaoxing.com/fanyalogin",
             method: "POST",
@@ -8830,7 +8832,7 @@ if (uni.restoreGlobal) {
             },
             success: (res) => {
               const data = res.data;
-              formatAppLog("log", "at pages/AccountView.vue:153", data["status"]);
+              formatAppLog("log", "at pages/AccountView.vue:164", data["status"]);
               const setCookie = res.cookies;
               if (!setCookie || setCookie.length === 0) {
                 return reject(data["status"]);
@@ -8840,7 +8842,7 @@ if (uni.restoreGlobal) {
                 const end = trimmed.indexOf(";");
                 return end > -1 ? trimmed.substring(0, end) : trimmed;
               }).filter(Boolean).join("; ");
-              formatAppLog("log", "at pages/AccountView.vue:167", accountList.value.length);
+              formatAppLog("log", "at pages/AccountView.vue:178", accountList.value.length);
               if (accountList.value.length == 0) {
                 uni.setStorageSync("CHAOXING_COOKIE", cookieStr);
               }
@@ -8862,14 +8864,14 @@ if (uni.restoreGlobal) {
             saveToStorage();
           }
         } catch (e) {
-          formatAppLog("error", "at pages/AccountView.vue:193", "读取本地数据失败:", e);
+          formatAppLog("error", "at pages/AccountView.vue:202", "读取本地数据失败:", e);
         }
       };
       const saveToStorage = () => {
         try {
           uni.setStorageSync("accountList", accountList.value);
         } catch (e) {
-          formatAppLog("error", "at pages/AccountView.vue:202", "保存数据失败:", e);
+          formatAppLog("error", "at pages/AccountView.vue:211", "保存数据失败:", e);
         }
       };
       const goBack = () => {
@@ -8879,22 +8881,31 @@ if (uni.restoreGlobal) {
       };
       const showAddDialog = () => {
         isEditing.value = false;
+        editingAccountId.value = null;
         newAccount.value = {
           name: "",
+          phone: "",
           password: ""
         };
         addDialogVisible.value = true;
         inputFocus.value = true;
       };
-      const editAccount = () => {
-        detailDialogVisible.value = false;
-        newAccount.value = {
-          ...selectedAccount.value,
-          password: "******"
-        };
+      const showEditDialog = (account) => {
+        uni.vibrateShort();
         isEditing.value = true;
+        editingAccountId.value = account.id;
+        newAccount.value = {
+          name: account.name,
+          phone: account.phone,
+          password: account.password
+        };
         addDialogVisible.value = true;
         inputFocus.value = true;
+      };
+      const editAccount = () => {
+        uni.vibrateShort();
+        detailDialogVisible.value = false;
+        showEditDialog(selectedAccount.value);
       };
       const closeAddDialog = () => {
         addDialogVisible.value = false;
@@ -8903,7 +8914,6 @@ if (uni.restoreGlobal) {
         const {
           name: name2,
           phone,
-          // ✅ 已解构
           password
         } = newAccount.value;
         if (!name2 || !phone || !password) {
@@ -8913,13 +8923,36 @@ if (uni.restoreGlobal) {
           });
           return;
         }
+        if (isEditing.value && editingAccountId.value) {
+          const duplicate = accountList.value.some(
+            (acc) => acc.name === name2 && acc.id !== editingAccountId.value
+          );
+          if (duplicate) {
+            uni.showToast({
+              title: "用户名已存在",
+              icon: "none"
+            });
+            return;
+          }
+          const index = accountList.value.findIndex((acc) => acc.id === editingAccountId.value);
+          if (index > -1) {
+            accountList.value[index].name = name2;
+            saveToStorage();
+            uni.showToast({
+              title: "修改成功",
+              icon: "success"
+            });
+          }
+          addDialogVisible.value = false;
+          return;
+        }
         let loginSuccess = false;
-        const result = await login(phone, password);
-        formatAppLog("log", "at pages/AccountView.vue:261", result);
         try {
+          const result = await login(phone, password);
+          formatAppLog("log", "at pages/AccountView.vue:313", result);
           if (result === false) {
             uni.showToast({
-              title: result.msg || "登录验证失败",
+              title: "登录验证失败，短时间只能请求5次请注意",
               icon: "none"
             });
             return;
@@ -8930,44 +8963,30 @@ if (uni.restoreGlobal) {
             title: "登录测试失败",
             icon: "none"
           });
-          formatAppLog("error", "at pages/AccountView.vue:276", "登录验证出错:", error);
+          formatAppLog("error", "at pages/AccountView.vue:327", "登录验证出错:", error);
           return;
         }
         if (!loginSuccess)
           return;
-        if (!isEditing.value) {
-          if (accountList.value.some((acc) => acc.name === name2)) {
-            uni.showToast({
-              title: "用户名已存在",
-              icon: "none"
-            });
-            return;
-          }
-          const account = {
-            id: Date.now(),
-            name: name2,
-            phone,
-            // ✅ 保存手机号
-            password,
-            createTime: (/* @__PURE__ */ new Date()).toLocaleDateString()
-          };
-          accountList.value.push(account);
+        if (accountList.value.some((acc) => acc.name === name2)) {
           uni.showToast({
-            title: "添加成功",
-            icon: "success"
+            title: "用户名已存在",
+            icon: "none"
           });
-        } else {
-          const index = accountList.value.findIndex((acc) => acc.id === selectedAccount.value.id);
-          if (index > -1) {
-            accountList.value[index].name = name2;
-            accountList.value[index].phone = phone;
-            accountList.value[index].password = password;
-            uni.showToast({
-              title: "更新成功",
-              icon: "success"
-            });
-          }
+          return;
         }
+        const account = {
+          id: Date.now(),
+          name: name2,
+          phone,
+          password,
+          createTime: (/* @__PURE__ */ new Date()).toLocaleDateString()
+        };
+        accountList.value.push(account);
+        uni.showToast({
+          title: "添加成功",
+          icon: "success"
+        });
         saveToStorage();
         addDialogVisible.value = false;
       };
@@ -8976,6 +8995,7 @@ if (uni.restoreGlobal) {
         detailDialogVisible.value = true;
       };
       const deleteAccount = (row) => {
+        uni.vibrateLong();
         uni.showModal({
           title: "确认删除",
           content: `确定要删除账号 "${row.name}" 吗？`,
@@ -8996,9 +9016,9 @@ if (uni.restoreGlobal) {
       };
       vue.onMounted(() => {
         loadFromStorage();
-        formatAppLog("log", "at pages/AccountView.vue:354", "当前账号列表:", accountList.value);
+        formatAppLog("log", "at pages/AccountView.vue:390", "当前账号列表:", accountList.value);
       });
-      const __returned__ = { accountList, addDialogVisible, detailDialogVisible, selectedAccount, newAccount, isEditing, inputFocus, encryptByAES, login, loadFromStorage, saveToStorage, goBack, showAddDialog, editAccount, closeAddDialog, submitAccount, showAccountDetail, deleteAccount, ref: vue.ref, onMounted: vue.onMounted, get CryptoJS() {
+      const __returned__ = { accountList, addDialogVisible, detailDialogVisible, selectedAccount, newAccount, isEditing, inputFocus, editingAccountId, encryptByAES, login, loadFromStorage, saveToStorage, goBack, showAddDialog, showEditDialog, editAccount, closeAddDialog, submitAccount, showAccountDetail, deleteAccount, ref: vue.ref, onMounted: vue.onMounted, get CryptoJS() {
         return CryptoJS;
       } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
@@ -9034,10 +9054,16 @@ if (uni.restoreGlobal) {
                 1
                 /* TEXT */
               ),
-              vue.createElementVNode("button", {
-                class: "delete-btn",
-                onClick: vue.withModifiers(($event) => $setup.deleteAccount(account), ["stop"])
-              }, " 删除 ", 8, ["onClick"])
+              vue.createElementVNode("view", { class: "item-buttons" }, [
+                vue.createElementVNode("button", {
+                  class: "edit-item-btn",
+                  onClick: vue.withModifiers(($event) => $setup.showEditDialog(account), ["stop"])
+                }, " 修改 ", 8, ["onClick"]),
+                vue.createElementVNode("button", {
+                  class: "delete-btn",
+                  onClick: vue.withModifiers(($event) => $setup.deleteAccount(account), ["stop"])
+                }, " 删除 ", 8, ["onClick"])
+              ])
             ], 8, ["onClick"]);
           }),
           128
@@ -9078,7 +9104,7 @@ if (uni.restoreGlobal) {
                 vue.withDirectives(vue.createElementVNode("input", {
                   "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $setup.newAccount.name = $event),
                   class: "form-input",
-                  placeholder: "请输入昵称",
+                  placeholder: "请输入昵称（随便取）",
                   type: "text",
                   focus: $setup.inputFocus
                 }, null, 8, ["focus"]), [
@@ -9087,38 +9113,28 @@ if (uni.restoreGlobal) {
               ]),
               vue.createElementVNode("view", { class: "form-group" }, [
                 vue.createElementVNode("text", { class: "form-label" }, "手机号"),
-                vue.withDirectives(vue.createElementVNode(
-                  "input",
-                  {
-                    "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.newAccount.phone = $event),
-                    class: "form-input",
-                    placeholder: "请输入手机号",
-                    type: "number",
-                    maxlength: "11",
-                    onInput: _cache[2] || (_cache[2] = (...args) => _ctx.handlePhoneInput && _ctx.handlePhoneInput(...args))
-                  },
-                  null,
-                  544
-                  /* NEED_HYDRATION, NEED_PATCH */
-                ), [
+                vue.withDirectives(vue.createElementVNode("input", {
+                  "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $setup.newAccount.phone = $event),
+                  class: "form-input",
+                  placeholder: "请输入手机号",
+                  type: "number",
+                  maxlength: "11",
+                  onInput: _cache[2] || (_cache[2] = (...args) => _ctx.handlePhoneInput && _ctx.handlePhoneInput(...args)),
+                  disabled: $setup.isEditing
+                }, null, 40, ["disabled"]), [
                   [vue.vModelText, $setup.newAccount.phone]
                 ])
               ]),
               vue.createElementVNode("view", { class: "form-group" }, [
                 vue.createElementVNode("text", { class: "form-label" }, "密码"),
-                vue.withDirectives(vue.createElementVNode(
-                  "input",
-                  {
-                    "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $setup.newAccount.password = $event),
-                    class: "form-input",
-                    placeholder: "请输入密码",
-                    password: "",
-                    type: "text"
-                  },
-                  null,
-                  512
-                  /* NEED_PATCH */
-                ), [
+                vue.withDirectives(vue.createElementVNode("input", {
+                  "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $setup.newAccount.password = $event),
+                  class: "form-input",
+                  placeholder: "请输入密码",
+                  password: "",
+                  type: "text",
+                  disabled: $setup.isEditing
+                }, null, 8, ["disabled"]), [
                   [vue.vModelText, $setup.newAccount.password]
                 ])
               ]),
@@ -9178,6 +9194,16 @@ if (uni.restoreGlobal) {
                   "text",
                   { class: "detail-value" },
                   vue.toDisplayString($setup.selectedAccount.name),
+                  1
+                  /* TEXT */
+                )
+              ]),
+              vue.createElementVNode("view", { class: "detail-row" }, [
+                vue.createElementVNode("text", { class: "detail-label" }, "手机号"),
+                vue.createElementVNode(
+                  "text",
+                  { class: "detail-value" },
+                  vue.toDisplayString($setup.selectedAccount.phone),
                   1
                   /* TEXT */
                 )
@@ -9368,6 +9394,7 @@ if (uni.restoreGlobal) {
         return await Promise.all(promises);
       };
       const handleScan = (ids) => {
+        uni.vibrateShort();
         if (selectedAccounts.value.length === 0) {
           uni.showToast({
             title: "请先选择至少一个账号",
@@ -9383,7 +9410,7 @@ if (uni.restoreGlobal) {
             result
           }) => {
             const pmise = await handleScanmini(ids, result);
-            formatAppLog("log", "at pages/QRcode.vue:228", "mise:", pmise);
+            formatAppLog("log", "at pages/QRcode.vue:229", "mise:", pmise);
             mise.value = pmise;
             scanResult.value = true;
             uni.showToast({
@@ -9414,11 +9441,11 @@ if (uni.restoreGlobal) {
             accounts.value = data;
           }
         } catch (e) {
-          formatAppLog("error", "at pages/QRcode.vue:258", "读取账号列表失败:", e);
+          formatAppLog("error", "at pages/QRcode.vue:259", "读取账号列表失败:", e);
         }
       };
       onPullDownRefresh(async () => {
-        formatAppLog("log", "at pages/QRcode.vue:262", "触发下拉刷新");
+        formatAppLog("log", "at pages/QRcode.vue:263", "触发下拉刷新");
         loadAccountList();
         uni.stopPullDownRefresh();
       });
@@ -9436,9 +9463,6 @@ if (uni.restoreGlobal) {
   };
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("view", { class: "container" }, [
-      vue.createElementVNode("view", { class: "header" }, [
-        vue.createElementVNode("text", { class: "title" }, "扫码账号")
-      ]),
       vue.createElementVNode("view", { class: "account-list" }, [
         vue.createElementVNode("view", { class: "account-item" }, [
           vue.createElementVNode("label", {
@@ -9501,6 +9525,13 @@ if (uni.restoreGlobal) {
           128
           /* KEYED_FRAGMENT */
         ))
+      ]),
+      vue.createElementVNode("view", { class: "action-section" }, [
+        vue.createElementVNode("button", {
+          class: "scan-btn",
+          disabled: $setup.selectedIds.length === 0 || $setup.isScanning,
+          onClick: _cache[0] || (_cache[0] = ($event) => $setup.handleScan($setup.selectedIds))
+        }, vue.toDisplayString($setup.isScanning ? "扫码中..." : "扫码签到"), 9, ["disabled"])
       ]),
       $setup.scanResult ? (vue.openBlock(), vue.createElementBlock("view", {
         key: 0,

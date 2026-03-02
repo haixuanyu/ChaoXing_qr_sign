@@ -203,6 +203,7 @@
 
   // 跳转到班级详情页
   const toClassActive = (item) => {
+    uni.vibrateShort()
     uni.navigateTo({
       url: `/pages/ClassActive?courseId=${item.courseId}&clazzId=${item.clazzId}`
 

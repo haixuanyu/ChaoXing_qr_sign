@@ -13,9 +13,15 @@
 
       <view v-for="account in accountList" :key="account.id" class="account-item" @click="showAccountDetail(account)">
         <text class="account-username">{{ account.name }}</text>
-        <button class="delete-btn" @click.stop="deleteAccount(account)">
-          删除
-        </button>
+        <view class="item-buttons">
+          <!-- 新增：修改按钮 -->
+          <button class="edit-item-btn" @click.stop="showEditDialog(account)">
+            修改
+          </button>
+          <button class="delete-btn" @click.stop="deleteAccount(account)">
+            删除
+          </button>
+        </view>
       </view>
     </view>
 
@@ -34,16 +40,18 @@
         <view class="popup-content">
           <view class="form-group">
             <text class="form-label">昵称</text>
-            <input v-model="newAccount.name" class="form-input" placeholder="请输入昵称" type="text" :focus="inputFocus" />
+            <input v-model="newAccount.name" class="form-input" placeholder="请输入昵称（随便取）" type="text"
+              :focus="inputFocus" />
           </view>
           <view class="form-group">
             <text class="form-label">手机号</text>
             <input v-model="newAccount.phone" class="form-input" placeholder="请输入手机号" type="number" maxlength="11"
-              @input="handlePhoneInput" />
+              @input="handlePhoneInput" :disabled="isEditing" />
           </view>
           <view class="form-group">
             <text class="form-label">密码</text>
-            <input v-model="newAccount.password" class="form-input" placeholder="请输入密码" password type="text" />
+            <input v-model="newAccount.password" class="form-input" placeholder="请输入密码" password type="text"
+              :disabled="isEditing" />
           </view>
           <view class="form-actions">
             <button class="submit-btn" @click="submitAccount">
@@ -71,6 +79,10 @@
             <text class="detail-value">{{ selectedAccount.name }}</text>
           </view>
           <view class="detail-row">
+            <text class="detail-label">手机号</text>
+            <text class="detail-value">{{ selectedAccount.phone }}</text>
+          </view>
+          <view class="detail-row">
             <text class="detail-label">创建时间</text>
             <text class="detail-value">{{ selectedAccount.createTime }}</text>
           </view>
@@ -89,6 +101,7 @@
     onMounted
   } from 'vue';
   import CryptoJS from 'crypto-js'
+
   // 账号列表（响应式）
   const accountList = ref([]);
 
@@ -103,6 +116,7 @@
   });
   const isEditing = ref(false); // 是否处于编辑状态
   const inputFocus = ref(false); // 控制输入框自动聚焦
+  const editingAccountId = ref(null); // 记录当前编辑的账号ID
 
 
   function encryptByAES(message) {
@@ -110,15 +124,12 @@
     const utf8Key = CryptoJS.enc.Utf8.parse(chaoxingkey)
     const utf8Iv = CryptoJS.enc.Utf8.parse(chaoxingkey)
 
-
     const encrypted = CryptoJS.AES.encrypt(message, utf8Key, {
       iv: utf8Iv,
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7,
-      // 关键：避免 CryptoJS 自动派生密钥
     })
 
-    // 返回原始密文的 Base64
     return encrypted.ciphertext.toString(CryptoJS.enc.Base64)
   }
 
@@ -142,7 +153,7 @@
           'validate': '',
           'doubleFactorLogin': '0',
           'independentId': '0',
-          'independentNameId': '0'
+          'independentNameId': '0',
         },
         header: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -184,10 +195,8 @@
       if (data && data.length) {
         accountList.value = data;
       } else {
-        // 默认数据（仅首次加载）
         accountList.value = [];
-
-        saveToStorage(); // 保存默认数据
+        saveToStorage();
       }
     } catch (e) {
       console.error('读取本地数据失败:', e);
@@ -210,27 +219,38 @@
     });
   };
 
-  // 显示添加弹窗（支持编辑）
+  // 显示添加弹窗
   const showAddDialog = () => {
     isEditing.value = false;
+    editingAccountId.value = null;
     newAccount.value = {
       name: '',
+      phone: '',
       password: ''
     };
     addDialogVisible.value = true;
-    inputFocus.value = true; // 聚焦
+    inputFocus.value = true;
   };
 
-  // 编辑账号
-  const editAccount = () => {
-    detailDialogVisible.value = false;
-    newAccount.value = {
-      ...selectedAccount.value,
-      password: '******'
-    }; // 模拟密码不可见
+  // ✅ 新增：显示修改弹窗（仅修改昵称）
+  const showEditDialog = (account) => {
+    uni.vibrateShort()
     isEditing.value = true;
+    editingAccountId.value = account.id;
+    newAccount.value = {
+      name: account.name,
+      phone: account.phone,
+      password: account.password
+    };
     addDialogVisible.value = true;
     inputFocus.value = true;
+  };
+
+  // 编辑账号（从详情弹窗进入）
+  const editAccount = () => {
+    uni.vibrateShort()
+    detailDialogVisible.value = false;
+    showEditDialog(selectedAccount.value);
   };
 
   // 关闭添加弹窗
@@ -243,11 +263,10 @@
   const submitAccount = async () => {
     const {
       name,
-      phone, // ✅ 已解构
+      phone,
       password
     } = newAccount.value;
 
-    // 🔔 建议：验证手机号是否为空（可选）
     if (!name || !phone || !password) {
       uni.showToast({
         title: '请填写完整信息',
@@ -256,13 +275,45 @@
       return;
     }
 
+    // ✅ 如果是编辑模式，且只修改昵称，则不需要重新登录验证
+    if (isEditing.value && editingAccountId.value) {
+      // 检查昵称是否重复（排除当前账号）
+      const duplicate = accountList.value.some(acc =>
+        acc.name === name && acc.id !== editingAccountId.value
+      );
+
+      if (duplicate) {
+        uni.showToast({
+          title: '用户名已存在',
+          icon: 'none'
+        });
+        return;
+      }
+
+      // 更新账号信息
+      const index = accountList.value.findIndex(acc => acc.id === editingAccountId.value);
+      if (index > -1) {
+        accountList.value[index].name = name;
+        // 如果手机号或密码也改了，可以选择是否重新验证登录
+        // 这里简化处理，只更新昵称
+        saveToStorage();
+        uni.showToast({
+          title: '修改成功',
+          icon: 'success'
+        });
+      }
+      addDialogVisible.value = false;
+      return;
+    }
+
+    // 添加新账号时需要登录验证
     let loginSuccess = false;
-    const result = await login(phone, password);
-    console.log(result)
     try {
+      const result = await login(phone, password);
+      console.log(result)
       if (result === false) {
         uni.showToast({
-          title: result.msg || '登录验证失败',
+          title: '登录验证失败，短时间只能请求5次请注意',
           icon: 'none'
         });
         return;
@@ -274,47 +325,32 @@
         icon: 'none'
       });
       console.error('登录验证出错:', error);
-      return; // ❌ 登录失败，直接返回，不继续
+      return;
     }
 
     if (!loginSuccess) return;
-    if (!isEditing.value) {
 
-      // 添加新账号
-      if (accountList.value.some(acc => acc.name === name)) {
-        uni.showToast({
-          title: '用户名已存在',
-          icon: 'none'
-        });
-        return;
-      }
-
-      const account = {
-        id: Date.now(),
-        name,
-        phone, // ✅ 保存手机号
-        password,
-        createTime: new Date().toLocaleDateString(),
-      };
-      accountList.value.push(account);
+    // 添加新账号
+    if (accountList.value.some(acc => acc.name === name)) {
       uni.showToast({
-        title: '添加成功',
-        icon: 'success'
+        title: '用户名已存在',
+        icon: 'none'
       });
-
-    } else {
-      // 更新已有账号
-      const index = accountList.value.findIndex(acc => acc.id === selectedAccount.value.id);
-      if (index > -1) {
-        accountList.value[index].name = name;
-        accountList.value[index].phone = phone; // ✅ 修复：更新手机号
-        accountList.value[index].password = password;
-        uni.showToast({
-          title: '更新成功',
-          icon: 'success'
-        });
-      }
+      return;
     }
+
+    const account = {
+      id: Date.now(),
+      name,
+      phone,
+      password,
+      createTime: new Date().toLocaleDateString(),
+    };
+    accountList.value.push(account);
+    uni.showToast({
+      title: '添加成功',
+      icon: 'success'
+    });
 
     saveToStorage();
     addDialogVisible.value = false;
@@ -327,8 +363,8 @@
     detailDialogVisible.value = true;
   };
 
-  // 删除账号
   const deleteAccount = (row) => {
+    uni.vibrateLong()
     uni.showModal({
       title: '确认删除',
       content: `确定要删除账号 "${row.name}" 吗？`,
@@ -362,33 +398,6 @@
     padding-bottom: 20px;
   }
 
-  /* 导航栏 */
-  .nav-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 44px 16px 16px;
-    background-color: #fff;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  .nav-left {
-    font-size: 16px;
-    color: #1989fa;
-    background: transparent;
-    padding: 8px;
-  }
-
-  .nav-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: #323233;
-  }
-
-  .nav-right {
-    width: 50px;
-  }
-
   /* 账号列表 */
   .account-list {
     margin: 16px;
@@ -413,22 +422,35 @@
   .account-username {
     font-size: 16px;
     color: #323233;
+    flex: 1;
   }
 
-
+  /* ✅ 新增：按钮容器 */
+  .item-buttons {
+    display: flex;
+    gap: 8px;
+  }
 
   .delete-btn {
     background-color: #ee0a24 !important;
-    /* 实心红 */
     color: #fff;
     font-size: 14px;
-    padding: 8px 16px;
-    /* 稍微加大一点更美观 */
+    padding: 6px 12px;
     border: none;
     border-radius: 6px;
     line-height: 1;
-    margin-left: auto;
-    /* 靠右 */
+    font-weight: 500;
+  }
+
+  /* ✅ 新增：修改按钮样式 */
+  .edit-item-btn {
+    background-color: #ff976a !important;
+    color: #fff;
+    font-size: 14px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    line-height: 1;
     font-weight: 500;
   }
 
@@ -521,6 +543,11 @@
 
   .form-input:focus {
     border-color: #1989fa;
+  }
+
+  .form-input:disabled {
+    background-color: #ebedf0;
+    color: #969799;
   }
 
   .form-actions {

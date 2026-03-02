@@ -7,7 +7,7 @@
   "id": "__UNI__D72075C",
   "name": "签星",
   "version": {
-    "name": "1.0.5",
+    "name": "1.1.4",
     "code": 123236
   },
   "description": "该项目仅供学习交流使用，请勿用于其他",
@@ -150,7 +150,7 @@
     "uni-app": {
       "control": "uni-v3",
       "vueVersion": "3",
-      "compilerVersion": "4.85",
+      "compilerVersion": "4.87",
       "nvueCompiler": "uni-app",
       "renderer": "auto",
       "nvue": {

@@ -209,6 +209,7 @@
 
   // 扫码操作
   const handleScan = (ids) => {
+    uni.vibrateShort()
     if (selectedAccounts.value.length === 0) {
       uni.showToast({
         title: '请先选择至少一个账号',
@@ -272,9 +273,9 @@
 <template>
   <view class="container">
     <!-- 页面标题 -->
-    <view class="header">
+    <!--  <view class="header">
       <text class="title">扫码账号</text>
-    </view>
+    </view> -->
     <!-- 全选按钮 -->
 
     <view class="account-list">
@@ -301,7 +302,12 @@
       </view>
     </view>
 
-
+    <view class="action-section">
+      <!--      <text class="selected-tip">已选择 {{ selectedIds.length }} 个账号</text> -->
+      <button class="scan-btn" :disabled="selectedIds.length === 0 || isScanning" @click="handleScan(selectedIds)">
+        {{ isScanning ? '扫码中...' : '扫码签到' }}
+      </button>
+    </view>
     <!-- 扫码按钮 -->
     <view v-if="scanResult" class="result-section">
       <view>签到结果</view>
@@ -392,6 +398,7 @@
     padding: 0 20px;
   }
 
+
   .scan-btn {
     background-color: #007aff;
     color: white;
@@ -399,10 +406,13 @@
     border-radius: 8px;
   }
 
-  .scan-btn:disabled {
-    background-color: #ccc;
+  /*  button.scan-btn[disabled] {
+    background-color: #f7f7f7 !important;
+  color: #666666 !important;
+  border: none;
   }
 
+  */
   .result-section {
     padding: 15px;
     background: #fff;

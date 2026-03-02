@@ -12,6 +12,7 @@
 
     </view>
 
+
     <!-- 功能列表 -->
     <view class="function-list">
       <view class="function-item" @click="toAccountManagement">
@@ -104,6 +105,7 @@
     })
   }
   const money = () => {
+    uni.vibrateShort()
     uni.showToast({
       icon: 'none',
       title: '好好生活，就是最大的支持。若喜欢，点个Github Star 就够了 ⭐'

@@ -5,30 +5,6 @@
     padding-bottom: 20px;
 }
 
-  /* 导航栏 */
-.nav-bar[data-v-c74125a5] {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 44px 16px 16px;
-    background-color: #fff;
-    border-bottom: 1px solid #f0f0f0;
-}
-.nav-left[data-v-c74125a5] {
-    font-size: 16px;
-    color: #1989fa;
-    background: transparent;
-    padding: 8px;
-}
-.nav-title[data-v-c74125a5] {
-    font-size: 18px;
-    font-weight: 500;
-    color: #323233;
-}
-.nav-right[data-v-c74125a5] {
-    width: 50px;
-}
-
   /* 账号列表 */
 .account-list[data-v-c74125a5] {
     margin: 16px;
@@ -50,19 +26,34 @@
 .account-username[data-v-c74125a5] {
     font-size: 16px;
     color: #323233;
+    flex: 1;
+}
+
+  /* ✅ 新增：按钮容器 */
+.item-buttons[data-v-c74125a5] {
+    display: flex;
+    gap: 8px;
 }
 .delete-btn[data-v-c74125a5] {
     background-color: #ee0a24 !important;
-    /* 实心红 */
     color: #fff;
     font-size: 14px;
-    padding: 8px 16px;
-    /* 稍微加大一点更美观 */
+    padding: 6px 12px;
     border: none;
     border-radius: 6px;
     line-height: 1;
-    margin-left: auto;
-    /* 靠右 */
+    font-weight: 500;
+}
+
+  /* ✅ 新增：修改按钮样式 */
+.edit-item-btn[data-v-c74125a5] {
+    background-color: #ff976a !important;
+    color: #fff;
+    font-size: 14px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    line-height: 1;
     font-weight: 500;
 }
 .empty-state[data-v-c74125a5] {
@@ -145,6 +136,10 @@
 }
 .form-input[data-v-c74125a5]:focus {
     border-color: #1989fa;
+}
+.form-input[data-v-c74125a5]:disabled {
+    background-color: #ebedf0;
+    color: #969799;
 }
 .form-actions[data-v-c74125a5] {
     margin-top: 24px;

@@ -58,6 +58,7 @@
         "iconPath": "/static/qr.png",
         "selectedIconPath": "/static/qr1.png"
       },
+
       {
         "pagePath": "pages/HomeView",
         "text": "我的",
