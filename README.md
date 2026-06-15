@@ -1,6 +1,5 @@
 # 省流
-  调学习通接口的纯前端项目（根本不需要担心账号风险，因为根本不上传账号，无需维护长期有效），签到使嘎嘎好用。主播已经用了快一个学年了，一点毛病没有，能拿来位置签到和扫码签到（至少需要一个义父去扫全班能签上），过两天给其他的一些奇形怪状的其他不常用签到更了。建议点个star好获取更新信息，除了怕老师人脸识别gank基本上没啥缺点了，想下的直接去[Releases 发布页](https://github.com/haixuanyu/ChaoXing_qr_sign/releases)的
-的apk下载并安装，可能会触发安装检测，请无视风险继续安装
+  这是一个普通的爬虫联手练手项目
 
 
 
@@ -17,17 +16,14 @@
 
 ##  项目简介
 
-你是否经常因为忘记签到、扫码慢、操作繁琐而错过学习通签到？  
-**ChaoXing_qr_sign** 为你提供一个**安全、高效、透明**的解决方案。
 
-本工具仅通过前端技术实现扫码功能，不依赖任何服务器或云函数，所有数据保存在本地，**绝不上传、不收集、不泄露**，真正做到“你的数据你做主”。
+
+本工具仅通过前端技术实现模拟扫码功能，不依赖任何服务器或云函数，所有数据保存在本地，**绝不上传、不收集、不泄露**，真正做到“你的数据你做主”。
 
 ---
 
 ##  核心功能
 
-  ** 实时扫码签到**  
-  调用手机摄像头，快速识别学习通二维码，一键跳转签到页面。
   ** Android 移动端优化**  
   专为手机设计，界面简洁，操作直观，新手也能轻松上手。
   ** 数据本地存储**  
@@ -45,8 +41,7 @@
 
 1. 下载并安装最新版本 APK（见下方“下载安装”）
 2. 打开应用，可选择手动输入账号或保存常用信息（可选）
-3. 点击“扫码签到”，对准学习通二维码进行扫描
-4. 扫码成功后，自动跳转至签到确认页，完成签到
+
 
 
 ---
@@ -66,7 +61,6 @@
 <div align="center">
   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-25-737_io.dcloud.HBuilder.jpg" width="200" alt="首页" style="margin: 10px;">
   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-34-803_io.dcloud.HBuilder.jpg" width="200" alt="活动" style="margin: 10px;">
-  <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-40-007_io.dcloud.HBuilder.jpg" width="200" alt="扫码界面" style="margin: 10px;">
   <img src="https://github.com/haixuanyu/ChaoXing_qr_sign/blob/main/Screenshot_2025-08-21-23-00-44-787_io.dcloud.HBuilder.jpg" width="200" alt="个人界面" style="margin: 10px;">
 </div>
 
